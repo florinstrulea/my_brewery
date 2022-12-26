@@ -2,11 +2,13 @@ package florin.my_brewery.services;
 
 import florin.my_brewery.services.interfaces.BeerRepo;
 import florin.my_brewery.web.model.BeerDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class BeerService implements BeerRepo {
     @Override
     public BeerDto getBeerById(UUID beerId) {
@@ -15,6 +17,7 @@ public class BeerService implements BeerRepo {
                 .beerName("Kastel Beer")
                 .beerStyle("Fruity")
                 .build();
+
 
     }
 
@@ -32,4 +35,20 @@ public class BeerService implements BeerRepo {
                 .beerStyle("Pale Ale")
                 .build();
     }
+
+    /**
+     * @param beerId
+     * @param beerDto
+     */
+    @Override
+    public void updateBeer(UUID beerId, BeerDto beerDto) {
+        //todo impl - would add a real impl to update beer
+    }
+
+    @Override
+    public void deleteById(UUID beerId) {
+        log.debug("Deleting a beer...");
+    }
+
+
 }

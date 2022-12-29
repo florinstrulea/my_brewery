@@ -2,11 +2,15 @@ package florin.my_brewery.controller;
 
 import florin.my_brewery.services.CustomerService;
 import florin.my_brewery.web.model.CustomerDto;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -36,7 +40,7 @@ public class CustomerController {
 
     @PutMapping("/{customerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void handleUpdate(@PathVariable("customerId") UUID customerId, CustomerDto customerDto) {
+    public void handleUpdate(@PathVariable("customerId") UUID customerId, @RequestBody @Valid CustomerDto customerDto) {
         customerService.updateCustomer(customerId, customerDto);
     }
 
@@ -44,4 +48,14 @@ public class CustomerController {
     public void deleteById(@PathVariable("customerId") UUID customerId) {
         customerService.deleteById(customerId);
     }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<List<String>> validationErrorHandler(ConstraintViolationException ex) {
+        List<String> errors = new ArrayList<>(ex.getConstraintViolations().size());
+        ex.getConstraintViolations().forEach(constraintViolation -> {
+            errors.add(constraintViolation.getPropertyPath() + " : " + constraintViolation.getMessage());
+        });
+        return new ResponseEntity<List<String>>(errors, HttpStatus.BAD_REQUEST);
+    }
+
 }

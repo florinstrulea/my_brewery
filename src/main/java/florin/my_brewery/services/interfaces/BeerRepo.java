@@ -5,11 +5,11 @@ import florin.my_brewery.web.model.BeerDto;
 import java.util.UUID;
 
 public interface BeerRepo {
-    BeerDto getBeerById(UUID beerId);
+  BeerDto getBeerById(UUID beerId);
 
-    BeerDto saveNewBeer(BeerDto beerDto);
+  BeerDto saveNewBeer(BeerDto beerDto);
 
-    void updateBeer(UUID beerId, BeerDto beerDto);
+  void updateBeer(UUID beerId, BeerDto beerDto);
 
-    void deleteById(UUID beerId);
+  void deleteById(UUID beerId);
 }

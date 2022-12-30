@@ -2,7 +2,6 @@ package florin.my_brewery.controller.v2;
 
 import florin.my_brewery.services.v2.BeerServiceV2;
 import florin.my_brewery.web.model.v2.BeerDtoV2;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpHeaders;
@@ -11,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Validated
@@ -54,13 +51,5 @@ public class BeerConrollerV2 {
   public void deleteBeer(@PathVariable("beerId") UUID beerId) {
     beerServiceV2.deleteById(beerId);
   }
-
-  @ExceptionHandler(ConstraintViolationException.class)
-  public ResponseEntity<List<String>> validationErrorHandler(ConstraintViolationException ex) {
-    List<String> errors = new ArrayList<>(ex.getConstraintViolations().size());
-    ex.getConstraintViolations().forEach(constraintViolation -> {
-      errors.add(constraintViolation.getPropertyPath() + " : " + constraintViolation.getMessage());
-    });
-    return new ResponseEntity<List<String>>(errors, HttpStatus.BAD_REQUEST);
-  }
+  
 }
